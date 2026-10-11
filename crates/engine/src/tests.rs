@@ -557,6 +557,21 @@ fn effects_list_reports_transition_folders() {
 }
 
 #[test]
+fn audio_transition_schema_describes_supported_parameters() {
+    let audio = commands::find("sequence.applyAudioTransition").unwrap();
+    for parameter in [
+        r#""clip":id?"#,
+        r#""effect":"constant_power|constant_gain|exponential_fade"?"#,
+        r#""frames":i64?"#,
+        r#""edge":"in"|"out"?"#,
+        r#""params":{param:value}?"#,
+        r#""reverse":bool?"#,
+    ] {
+        assert!(audio.params.contains(parameter), "missing {parameter} in {}", audio.params);
+    }
+}
+
+#[test]
 fn commands_are_unique_and_described() {
     let mut ids = std::collections::HashSet::new();
     for c in command_specs() {
